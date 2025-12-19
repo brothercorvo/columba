@@ -214,6 +214,20 @@ interface ReticulumProtocol {
         imageData: ByteArray? = null,
         imageFormat: String? = null,
     ): Result<MessageReceipt>
+
+    /**
+     * Send location telemetry to a destination via LXMF field 7.
+     *
+     * @param destinationHash Destination hash bytes (16 bytes identity hash)
+     * @param locationJson JSON string with location data
+     * @param sourceIdentity Identity of the sender
+     * @return Result containing MessageReceipt or failure
+     */
+    suspend fun sendLocationTelemetry(
+        destinationHash: ByteArray,
+        locationJson: String,
+        sourceIdentity: Identity,
+    ): Result<MessageReceipt>
 }
 
 /**

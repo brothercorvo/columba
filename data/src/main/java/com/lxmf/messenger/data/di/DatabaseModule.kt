@@ -12,6 +12,7 @@ import com.lxmf.messenger.data.db.dao.CustomThemeDao
 import com.lxmf.messenger.data.db.dao.LocalIdentityDao
 import com.lxmf.messenger.data.db.dao.MessageDao
 import com.lxmf.messenger.data.db.dao.PeerIdentityDao
+import com.lxmf.messenger.data.db.dao.ReceivedLocationDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -1026,6 +1027,33 @@ object DatabaseModule {
             }
         }
 
+    // Migration from version 23 to 24: Add received_locations table for location sharing
+    // Stores location telemetry received from contacts for map display
+    private val MIGRATION_23_24 =
+        object : Migration(23, 24) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create received_locations table
+                database.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS received_locations (
+                        id TEXT NOT NULL PRIMARY KEY,
+                        senderHash TEXT NOT NULL,
+                        latitude REAL NOT NULL,
+                        longitude REAL NOT NULL,
+                        accuracy REAL NOT NULL,
+                        timestamp INTEGER NOT NULL,
+                        expiresAt INTEGER,
+                        receivedAt INTEGER NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                // Create indices for efficient queries
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_received_locations_senderHash ON received_locations(senderHash)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_received_locations_senderHash_timestamp ON received_locations(senderHash, timestamp)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_received_locations_expiresAt ON received_locations(expiresAt)")
+            }
+        }
+
     @Provides
     @Singleton
     fun provideColumbaDatabase(
@@ -1036,7 +1064,7 @@ object DatabaseModule {
             ColumbaDatabase::class.java,
             "columba_database",
         )
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18, MIGRATION_18_19, MIGRATION_19_20, MIGRATION_20_21, MIGRATION_21_22, MIGRATION_22_23)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18, MIGRATION_18_19, MIGRATION_19_20, MIGRATION_20_21, MIGRATION_21_22, MIGRATION_22_23, MIGRATION_23_24)
             .build()
     }
 
@@ -1073,6 +1101,11 @@ object DatabaseModule {
     @Provides
     fun provideLocalIdentityDao(database: ColumbaDatabase): LocalIdentityDao {
         return database.localIdentityDao()
+    }
+
+    @Provides
+    fun provideReceivedLocationDao(database: ColumbaDatabase): ReceivedLocationDao {
+        return database.receivedLocationDao()
     }
 
     @Provides

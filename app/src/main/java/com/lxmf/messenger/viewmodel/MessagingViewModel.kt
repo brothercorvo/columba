@@ -26,8 +26,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flatMapLatest
@@ -578,15 +578,16 @@ class MessagingViewModel
                     conversationRepository.updateMessageStatus(messageId, "pending")
 
                     // Send the message
-                    val result = reticulumProtocol.sendLxmfMessageWithMethod(
-                        destinationHash = destHashBytes,
-                        content = failedMessage.content,
-                        sourceIdentity = identity,
-                        deliveryMethod = deliveryMethod,
-                        tryPropagationOnFail = tryPropOnFail,
-                        imageData = imageData,
-                        imageFormat = imageFormat,
-                    )
+                    val result =
+                        reticulumProtocol.sendLxmfMessageWithMethod(
+                            destinationHash = destHashBytes,
+                            content = failedMessage.content,
+                            sourceIdentity = identity,
+                            deliveryMethod = deliveryMethod,
+                            tryPropagationOnFail = tryPropOnFail,
+                            imageData = imageData,
+                            imageFormat = imageFormat,
+                        )
 
                     result.onSuccess { receipt ->
                         val newMessageHash = receipt.messageHash.joinToString("") { "%02x".format(it) }

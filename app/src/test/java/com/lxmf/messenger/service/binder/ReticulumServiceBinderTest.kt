@@ -81,24 +81,25 @@ class ReticulumServiceBinderTest {
         every { state.isCurrentGeneration(any()) } returns true
         coEvery { wrapperManager.shutdown(any()) } just Runs
 
-        binder = ReticulumServiceBinder(
-            context = context,
-            state = state,
-            wrapperManager = wrapperManager,
-            identityManager = identityManager,
-            routingManager = routingManager,
-            messagingManager = messagingManager,
-            pollingManager = pollingManager,
-            broadcaster = broadcaster,
-            lockManager = lockManager,
-            maintenanceManager = maintenanceManager,
-            notificationManager = notificationManager,
-            bleCoordinator = bleCoordinator,
-            scope = testScope,
-            onInitialized = {},
-            onShutdown = { onShutdownCalled = true },
-            onForceExit = {},
-        )
+        binder =
+            ReticulumServiceBinder(
+                context = context,
+                state = state,
+                wrapperManager = wrapperManager,
+                identityManager = identityManager,
+                routingManager = routingManager,
+                messagingManager = messagingManager,
+                pollingManager = pollingManager,
+                broadcaster = broadcaster,
+                lockManager = lockManager,
+                maintenanceManager = maintenanceManager,
+                notificationManager = notificationManager,
+                bleCoordinator = bleCoordinator,
+                scope = testScope,
+                onInitialized = {},
+                onShutdown = { onShutdownCalled = true },
+                onForceExit = {},
+            )
     }
 
     @After

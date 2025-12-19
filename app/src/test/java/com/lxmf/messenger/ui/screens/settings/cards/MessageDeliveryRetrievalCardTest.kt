@@ -8,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.assertIsNotSelected
-import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -384,10 +382,11 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun currentRelayInfo_noHops_omitsHopsText() {
-        val config = CardConfig(
-            currentRelayName = "TestRelay",
-            currentRelayHops = null,
-        )
+        val config =
+            CardConfig(
+                currentRelayName = "TestRelay",
+                currentRelayHops = null,
+            )
         setUpCardWithConfig(config)
 
         // Should display relay name but not "hops away" text
@@ -834,9 +833,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun lastSync_justNow_displaysJustNow() {
-        val config = CardConfig(
-            lastSyncTimestamp = MessageDeliveryRetrievalTestFixtures.timestampJustNow(),
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = MessageDeliveryRetrievalTestFixtures.timestampJustNow(),
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("Last sync: Just now").performScrollTo().assertIsDisplayed()
@@ -844,9 +844,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun lastSync_secondsAgo_displaysSecondsAgo() {
-        val config = CardConfig(
-            lastSyncTimestamp = MessageDeliveryRetrievalTestFixtures.timestampSecondsAgo(30),
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = MessageDeliveryRetrievalTestFixtures.timestampSecondsAgo(30),
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("Last sync: 30 seconds ago").performScrollTo().assertIsDisplayed()
@@ -854,9 +855,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun lastSync_1MinuteAgo_displays1MinuteAgo() {
-        val config = CardConfig(
-            lastSyncTimestamp = MessageDeliveryRetrievalTestFixtures.timestamp1MinuteAgo(),
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = MessageDeliveryRetrievalTestFixtures.timestamp1MinuteAgo(),
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("Last sync: 1 minute ago").performScrollTo().assertIsDisplayed()
@@ -864,9 +866,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun lastSync_multipleMinutes_displaysMinutesAgo() {
-        val config = CardConfig(
-            lastSyncTimestamp = MessageDeliveryRetrievalTestFixtures.timestampMinutesAgo(3),
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = MessageDeliveryRetrievalTestFixtures.timestampMinutesAgo(3),
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("Last sync: 3 minutes ago").performScrollTo().assertIsDisplayed()
@@ -877,9 +880,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun formatRelativeTime_under5Seconds_returnsJustNow() {
-        val config = CardConfig(
-            lastSyncTimestamp = System.currentTimeMillis() - 2_000L,
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = System.currentTimeMillis() - 2_000L,
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("Just now", substring = true).performScrollTo().assertIsDisplayed()
@@ -887,9 +891,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun formatRelativeTime_under60Seconds_returnsSecondsAgo() {
-        val config = CardConfig(
-            lastSyncTimestamp = System.currentTimeMillis() - 30_000L,
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = System.currentTimeMillis() - 30_000L,
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("seconds ago", substring = true).performScrollTo().assertIsDisplayed()
@@ -897,9 +902,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun formatRelativeTime_60to120Seconds_returns1MinuteAgo() {
-        val config = CardConfig(
-            lastSyncTimestamp = System.currentTimeMillis() - 90_000L,
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = System.currentTimeMillis() - 90_000L,
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("1 minute ago", substring = true).performScrollTo().assertIsDisplayed()
@@ -907,9 +913,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun formatRelativeTime_120SecTo1Hour_returnsMinutesAgo() {
-        val config = CardConfig(
-            lastSyncTimestamp = System.currentTimeMillis() - 180_000L,
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = System.currentTimeMillis() - 180_000L,
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("minutes ago", substring = true).performScrollTo().assertIsDisplayed()
@@ -917,9 +924,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun formatRelativeTime_1HourTo2Hours_returns1HourAgo() {
-        val config = CardConfig(
-            lastSyncTimestamp = System.currentTimeMillis() - 5_400_000L,
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = System.currentTimeMillis() - 5_400_000L,
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("1 hour ago", substring = true).performScrollTo().assertIsDisplayed()
@@ -927,9 +935,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun formatRelativeTime_2HoursTo24Hours_returnsHoursAgo() {
-        val config = CardConfig(
-            lastSyncTimestamp = System.currentTimeMillis() - 10_800_000L,
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = System.currentTimeMillis() - 10_800_000L,
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("hours ago", substring = true).performScrollTo().assertIsDisplayed()
@@ -937,9 +946,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun formatRelativeTime_24HoursPlus_returnsDaysAgo() {
-        val config = CardConfig(
-            lastSyncTimestamp = System.currentTimeMillis() - 172_800_000L,
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = System.currentTimeMillis() - 172_800_000L,
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("days ago", substring = true).performScrollTo().assertIsDisplayed()
@@ -947,9 +957,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun formatRelativeTime_exactBoundary_60Seconds() {
-        val config = CardConfig(
-            lastSyncTimestamp = System.currentTimeMillis() - 60_000L,
-        )
+        val config =
+            CardConfig(
+                lastSyncTimestamp = System.currentTimeMillis() - 60_000L,
+            )
         setUpCardWithConfig(config)
 
         // At exactly 60 seconds, should show "1 minute ago"
@@ -1035,10 +1046,11 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun edgeCase_syncButtonDisabled_whenSyncingAndNoRelay() {
-        val config = CardConfig(
-            isSyncing = true,
-            currentRelayName = null,
-        )
+        val config =
+            CardConfig(
+                isSyncing = true,
+                currentRelayName = null,
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("Syncing...").performScrollTo().assertIsNotEnabled()
@@ -1046,9 +1058,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun edgeCase_customIntervalAtMinBoundary() {
-        val config = CardConfig(
-            retrievalIntervalSeconds = 10, // Minimum valid
-        )
+        val config =
+            CardConfig(
+                retrievalIntervalSeconds = 10, // Minimum valid
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("Retrieval interval: 10s").performScrollTo().assertIsDisplayed()
@@ -1057,9 +1070,10 @@ class MessageDeliveryRetrievalCardTest {
 
     @Test
     fun edgeCase_customIntervalAtMaxBoundary() {
-        val config = CardConfig(
-            retrievalIntervalSeconds = 600, // Maximum valid
-        )
+        val config =
+            CardConfig(
+                retrievalIntervalSeconds = 600, // Maximum valid
+            )
         setUpCardWithConfig(config)
 
         composeTestRule.onNodeWithText("Retrieval interval: 10min").performScrollTo().assertIsDisplayed()
